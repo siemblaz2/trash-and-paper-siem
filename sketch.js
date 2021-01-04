@@ -1,49 +1,70 @@
+
 const Engine = Matter.Engine;
-const World= Matter.World;
+const World = Matter.World;
 const Bodies = Matter.Bodies;
+const Body = Matter.Body;
+const Render = Matter.Render;
+var dustbinObj, paperObject,groundObject	
+var world;
 
-var engine, world;
-var ground,ball;
-var binImg,bin;
 
-function preload(){
-    binImg = loadImage("Images/dustbingreen.png");
+function setup() {
+	createCanvas(1600, 700);
+	rectMode(CENTER);
+
+
+	engine = Engine.create();
+	world = engine.world;
+	
+	paperObject=new paper(200,450,70);
+	groundObject=new ground(width/2,670,width,20);
+	dustbinObj=new dustbin(1200,650);
+	//Create a Ground
+	
+
+	var render = Render.create({
+	  element: document.body,
+	  engine: engine,
+	  options: {
+	    width: 1600,
+	    height: 700,
+	    wireframes: false
+	  }
+	});
+
+	Engine.run(engine);
+	Render.run(render);
+  
 }
-function setup(){
-    var canvas = createCanvas(1200,600);
-    engine = Engine.create();
-    world = engine.world;
 
-    ground = new Ground();
-    crumpledPaper = new Paper();
 
-    bin = createSprite(964,520,20,20);
-    bin.addImage(binImg);
-    bin.scale = 0.45;
+function draw() {
+  rectMode(CENTER);
+  background(230);
+ 
+  
+  paperObject.display();
+  groundObject.display();
+  dustbinObj.display();
 
-    binPart1 = new Dustbin(902,505,10,120);
-    binPart2 = new Dustbin(962,565,130,10);
-    binPart3 = new Dustbin(1024,505,10,120);
+  
+  
+ 
+  
+  
+ 
 }
 
-function draw(){
-    background(0);
-    Engine.update(engine);
+function keyPressed() {
+  	if (keyCode === UP_ARROW) {
 
-    //text(mouseX+","+mouseY,200,200);
+    	Matter.Body.applyForce(paperObject.body,paperObject.body.position,{x:130,y:-145});
 
     
-    ground.display();
-    crumpledPaper.display();
-    binPart1.display();
-    binPart2.display();
-    binPart3.display(); 
-      
-    drawSprites();
+  	}
 }
 
-function keyPressed(){
-    if(keyCode === UP_ARROW){
-        Matter.Body.applyForce(crumpledPaper.body,crumpledPaper.body.position,{x:74,y:-75});
-    }
-}
+
+
+
+
